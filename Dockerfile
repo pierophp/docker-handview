@@ -1,6 +1,8 @@
 FROM ubuntu
 MAINTAINER "Piero Giusti <pierophp@gmail.com>"
 
+ENV DEBIAN_FRONTEND noninteractive
+
 # Upgrade 
 RUN apt-get update && \
     apt-get upgrade -y && \
@@ -8,7 +10,7 @@ RUN apt-get update && \
 
 # Install Tools
 RUN apt-get update && \
-    apt-get install -y wget curl vim less && \
+    apt-get install -y wget curl vim nano less unzip && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 
@@ -36,8 +38,8 @@ RUN chown -R www-data:www-data /var/www/
 
 # mysql
 RUN apt-get update && \
-    echo "mysql-server mysql-server/root_password password" | debconf-set-selections && \
-    echo "mysql-server mysql-server/root_password_again password" | debconf-set-selections && \
+    echo "mysql-server mysql-server/root_password password root" | debconf-set-selections && \
+    echo "mysql-server mysql-server/root_password_again password root" | debconf-set-selections && \
     apt-get install -y mysql-server && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN sed -i 's/^key_buffer\s*=/key_buffer_size =/' /etc/mysql/my.cnf
@@ -77,6 +79,10 @@ ADD supervisor/mysql.conf /etc/supervisor/conf.d/mysql.conf
 ADD supervisor/sshd.conf /etc/supervisor/conf.d/sshd.conf
 
 WORKDIR /var/www/
+
+# isso faz que nao seja comitado
+# VOLUME /var/www/
+# VOLUME /var/lib/mysql/
 
 EXPOSE 80
 EXPOSE 22
