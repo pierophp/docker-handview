@@ -1,2 +1,2 @@
 echo "`boot2docker ip` handview" | sudo tee -a  /etc/hosts
-docker run -d -p 2222:22 -p 8080:80 -v /Applications/XAMPP/htdocs/handview:/var/www/handview --name handview --hostname handview pierophp/handview
+docker run -d -p 2222:22 -p 80:80 -v /Applications/XAMPP/htdocs/handview:/var/www/handview --name handview --hostname handview pierophp/handview

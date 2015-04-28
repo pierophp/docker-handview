@@ -33,7 +33,6 @@ RUN apt-get update && \
 RUN unlink /etc/nginx/sites-enabled/default
 ADD nginx/default /etc/nginx/sites-enabled/default
 RUN mkdir /var/www/
-ADD nginx/index.php /var/www/
 RUN chown -R www-data:www-data /var/www/
 
 # mysql
