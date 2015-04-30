@@ -1,5 +1,6 @@
 server {
     listen 80;
+    client_max_body_size 10G;
 
     index index.html index.php;
 
@@ -11,6 +12,11 @@ server {
         gzip on;
         try_files $uri $uri/ /index.html /index.php?$query_string;
 
+    }
+
+    location /handview {
+        gzip on;
+        try_files $uri $uri/ /handview/index.php?$query_string;
     }
 
     location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$ {
