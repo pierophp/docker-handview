@@ -4,9 +4,9 @@
 
 Esse docker vem com o nginx + mysql e todas as outras ferramentas pré-instaladas pra rodar o Hand View.
 
-<h2>VMware Fusion</h2>
+<h2>VMware Fusion - MAC</h2>
 
-Para ter o boot2docker pré-instalado com o VMware Tools, use essa ISO:
+Para ter o boot2docker pré-instalado com o VMware Tools (necessário para compartilhar pasta com a VM), use essa ISO:
 
 https://github.com/cloudnativeapps/boot2docker/releases/
 
