@@ -87,5 +87,6 @@ WORKDIR /var/www/
 
 EXPOSE 80
 EXPOSE 22
+EXPOSE 3306
 
 CMD ["/usr/bin/supervisord", "--nodaemon", "-c", "/etc/supervisor/supervisord.conf"]
