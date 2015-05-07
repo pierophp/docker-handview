@@ -1,1 +1,1 @@
-docker run -it handview bash
+docker exec -it handview bash
