@@ -9,13 +9,13 @@ RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install Tools
+# Tools
 RUN apt-get update && \
     apt-get install -y wget curl vim nano less unzip && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 
-# php-fpm
+# PHP
 RUN apt-get update && \
     apt-get install -y php5-fpm php5-cli php5-gd php5-mcrypt php5-mysql php5-curl && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -27,7 +27,7 @@ RUN sed -i 's/^listen\s*=.*$/listen = 127.0.0.1:9000/' /etc/php5/fpm/pool.d/www.
     touch /var/log/php5/cli.log /var/log/php5/cgi.log && \
     chown www-data:www-data /var/log/php5/cgi.log /var/log/php5/cli.log    
 
-# nginx
+# Nginx
 RUN apt-get update && \
     apt-get install -y nginx && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -36,7 +36,7 @@ ADD nginx/default /etc/nginx/sites-enabled/default
 RUN mkdir /var/www/
 RUN chown -R www-data:www-data /var/www/
 
-# mysql
+# MySql
 RUN apt-get update && \
     echo "mysql-server mysql-server/root_password password" | debconf-set-selections && \
     echo "mysql-server mysql-server/root_password_again password" | debconf-set-selections && \
@@ -45,7 +45,7 @@ RUN apt-get update && \
 RUN sed -i 's/^key_buffer\s*=/key_buffer_size =/' /etc/mysql/my.cnf
 RUN chown -R mysql:mysql /var/lib/mysql
 
-#SSHD
+# SSHD
 RUN apt-get update && \ 
     apt-get install -y openssh-client openssh-server && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -62,15 +62,12 @@ RUN mkdir -p /var/www/phpmyadmin && \
     rm -rf *.md .coveralls.yml ChangeLog composer.json config.sample.inc.php DCO doc examples phpunit.* README RELEASE-DATE-* setup
 ADD nginx/config.inc.php /var/www/phpmyadmin/
 
-#avconv && mp4v2
+# Avconv && Mp4v2
 RUN apt-get update && \ 
     apt-get install -y libav-tools mp4v2-utils  && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-
-
-# supervisor
-## Install supervisor
+# Supervisor
 RUN apt-get update && \
     apt-get install -y supervisor && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -79,7 +76,7 @@ ADD supervisor/nginx.conf /etc/supervisor/conf.d/nginx.conf
 ADD supervisor/mysql.conf /etc/supervisor/conf.d/mysql.conf
 ADD supervisor/sshd.conf /etc/supervisor/conf.d/sshd.conf
 
-WORKDIR /var/www/
+WORKDIR /var/www/handview/
 
 # isso faz que nao seja comitado
 # VOLUME /var/www/
