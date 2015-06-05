@@ -8,9 +8,9 @@ Esse docker vem com o nginx + mysql e todas as outras ferramentas pré-instalada
 
 <h3>Instalação Docker</h3>
 
-Instale o Ubuntu Server e o SSH.
+Instale o Ubuntu Server e o SSH com um user docker.
 
-Instale o Docker com um user docker:
+Instale o Docker:
 
 http://docs.docker.com/installation/ubuntulinux/
 
@@ -19,9 +19,7 @@ wget -qO- https://get.docker.com/ | sh
 sudo usermod -aG docker docker
 </pre>
 
-Crie um novo adaptador de rede do tipo "Bridged Adapter".
-
-O primeiro deve estar como "NAT".
+Mude o adaptador do VirtualBox pra "Bridged Adapter". Crie um novo do tipo "NAT".
 
 Adicione isso no arquivo /etc/network/interfaces do  Ubuntu
 <pre>
