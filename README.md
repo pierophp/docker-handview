@@ -22,6 +22,16 @@ Crie um novo adaptador de rede do tipo "Bridged Adapter".
 
 O primeiro deve estar como "NAT".
 
+Adicione isso no arquivo /etc/network/interfaces do  Ubuntu
+
+allow-hotplug eth1
+
+iface eth1 inet dhcp
+
+Para descobrir o IP do VirtualBox;
+
+VBoxManage guestproperty get "ubuntu-docker" "/VirtualBox/GuestInfo/Net/0/V4/IP"
+
 <h3>Configurando Server - Ubuntu</h3>
 
 https://docs.docker.com/articles/https/
@@ -61,9 +71,6 @@ Crie os redirecionamentos de portas no VirtualBox:
 2222 -> 22 - SSH
 
 2376 -> 2376 - DOCKER
-
-8080 -> 80 - NGINX
-
 
 <h2>VMware Fusion - MAC</h2>
 
