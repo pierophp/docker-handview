@@ -48,7 +48,7 @@ key.pem
 
 Adicione no arquivo ~/.profile
 
-export DOCKER_HOST=tcp://10.10.10.20:2376
+export DOCKER_HOST=tcp://127.0.0.1:2376
 
 export DOCKER_CERT_PATH=~/.docker/certs
 
