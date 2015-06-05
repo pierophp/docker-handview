@@ -18,6 +18,10 @@ wget -qO- https://get.docker.com/ | sh
 
 sudo usermod -aG docker docker
 
+Crie um novo adaptador de rede do tipo "Bridged Adapter".
+
+O primeiro deve estar como "NAT".
+
 <h3>Configurando Server - Ubuntu</h3>
 
 https://docs.docker.com/articles/https/
@@ -44,7 +48,7 @@ key.pem
 
 Adicione no arquivo ~/.profile
 
-export DOCKER_HOST=tcp://127.0.0.1:2376
+export DOCKER_HOST=tcp://10.10.10.20:2376
 
 export DOCKER_CERT_PATH=~/.docker/certs
 
@@ -58,9 +62,8 @@ Crie os redirecionamentos de portas no VirtualBox:
 
 2376 -> 2376 - DOCKER
 
-<h3>Habilitando DNS no VirtualBox</h3>
+8080 -> 80 - NGINX
 
-VBoxManage modifyvm "ubuntu-docker" --natdnshostresolver1 on
 
 <h2>VMware Fusion - MAC</h2>
 
