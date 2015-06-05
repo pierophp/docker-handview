@@ -29,7 +29,9 @@ service docker stop
 docker -d --tlsverify --tlscacert=/home/docker/.docker/ca.pem --tlscert=/home/docker/.docker/server-cert.pem --tlskey=/home/docker/.docker/server-key.pem  -H=0.0.0.0:2375
 
 Crie os redirecionamentos de portas no VirtualBox:
+
 2222 -> 22 - SSH
+
 2375 -> 2375 - DOCKER
 
 <h2>VMware Fusion - MAC</h2>
