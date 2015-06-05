@@ -24,14 +24,16 @@ Crie um novo adaptador de rede do tipo "Bridged Adapter".
 O primeiro deve estar como "NAT".
 
 Adicione isso no arquivo /etc/network/interfaces do  Ubuntu
-
+<pre>
 allow-hotplug eth1
-
 iface eth1 inet dhcp
+</pre>
 
 Para descobrir o IP do VirtualBox;
 
+<pre>
 VBoxManage guestproperty get "ubuntu-docker" "/VirtualBox/GuestInfo/Net/0/V4/IP"
+</pre>
 
 <h3>Configurando Server - Ubuntu</h3>
 
@@ -42,29 +44,22 @@ Crie os certificados de segurança.
 http://www.centurylinklabs.com/tutorials/docker-on-the-mac-without-boot2docker/
 
 Adicione no arquivo /etc/rc.local:
-
+<pre>
 service docker stop
-
 docker -d --tlsverify --tlscacert=/home/docker/.docker/ca.pem --tlscert=/home/docker/.docker/server-cert.pem --tlskey=/home/docker/.docker/server-key.pem  -H=0.0.0.0:2376 &
+</pre>
 
 <h3>Configurando Client - MAC</h3>
 
-Copie os 3 arquivos de certificado  para ~/.docker/certs
-
-ca.pem
-
-cert.pem
-
-key.pem
+Copie os arquivos ca.pem, cert.pem e key.pem do Ubuntu para ~/.docker/certs
 
 Adicione no arquivo ~/.profile
 
+<pre>
 export DOCKER_HOST=tcp://127.0.0.1:2376
-
 export DOCKER_CERT_PATH=~/.docker/certs
-
 export DOCKER_TLS_VERIFY=1
-
+</pre>
 <h3>Redirecionamento de Portas</h3>
 
 Crie os redirecionamentos de portas no VirtualBox:
@@ -80,8 +75,9 @@ Para ter o boot2docker pré-instalado com o VMware Tools (necessário para compa
 https://github.com/cloudnativeapps/boot2docker/releases/
 
 Baixe ela e coloque em seu localhost.
-
+<pre>
 docker-machine create --driver vmwarefusion --vmwarefusion-boot2docker-url http://localhost/boot2docker-1.6.0-vmw.iso dev
+</pre>
 
 Para compartilhar usando link simbólico, adicionar isso no arquivo .vmx:
 
