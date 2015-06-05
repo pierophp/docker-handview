@@ -14,9 +14,13 @@ Instale o Docker com um user docker:
 
 http://docs.docker.com/installation/ubuntulinux/
 
+<code>
+
 wget -qO- https://get.docker.com/ | sh
 
 sudo usermod -aG docker docker
+
+</code>
 
 Crie um novo adaptador de rede do tipo "Bridged Adapter".
 
