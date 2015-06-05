@@ -6,6 +6,8 @@ Esse docker vem com o nginx + mysql e todas as outras ferramentas pré-instalada
 
 <h2>VirtualBox - Sem boot2docker</h2>
 
+<h3>Instalação Docker</h3>
+
 Instale o Ubuntu Server e o SSH.
 
 Instale o Docker com um user docker:
@@ -15,6 +17,8 @@ http://docs.docker.com/installation/ubuntulinux/
 wget -qO- https://get.docker.com/ | sh
 
 sudo usermod -aG docker docker
+
+<h3>Configurando Server - Ubuntu</h3>
 
 https://docs.docker.com/articles/https/
 
@@ -28,11 +32,31 @@ service docker stop
 
 docker -d --tlsverify --tlscacert=/home/docker/.docker/ca.pem --tlscert=/home/docker/.docker/server-cert.pem --tlskey=/home/docker/.docker/server-key.pem  -H=0.0.0.0:2375
 
+<h3>Configurando Client - MAC/h3>
+
+Copie os 3 arquivos de certificado  para ~/.docker/certs
+
+ca.pem
+
+cert.pem
+
+key.pem
+
+Adicione no arquivo ~/.profile
+
+export DOCKER_HOST=tcp://127.0.0.1:2376
+
+export DOCKER_CERT_PATH=~/.docker/certs
+
+export DOCKER_TLS_VERIFY=1
+
+<h3>Redirecionamento de Portas</h3>
+
 Crie os redirecionamentos de portas no VirtualBox:
 
 2222 -> 22 - SSH
 
-2375 -> 2375 - DOCKER
+2376 -> 2376 - DOCKER
 
 <h2>VMware Fusion - MAC</h2>
 
