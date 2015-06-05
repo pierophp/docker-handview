@@ -22,13 +22,12 @@ Crie os certificados de segurança.
 
 http://www.centurylinklabs.com/tutorials/docker-on-the-mac-without-boot2docker/
 
-Adicione no arquivo /etc/default/docker
+Adicione no arquivo /etc/rc.local:
 
-DOCKER_OPTS="-H tcp://0.0.0.0:2375 -tlscacert=/home/docker/.docker/ca.pem --tlscert=/home/docker/.docker/server-cert.pem --tlskey=/home/docker/.docker/server-key.pem″
+service docker stop
+docker -d --tlsverify --tlscacert=/home/docker/.docker/ca.pem --tlscert=/home/docker/.docker/server-cert.pem --tlskey=/home/docker/.docker/server-key.pem  -H=0.0.0.0:2375
 
-sudo service docker restart
-
-Crie um redirecionamento de portas no Virtual Box:
+Crie os redirecionamentos de portas no VirtualBox:
 2222 -> 22 - SSH
 2375 -> 2375 - DOCKER
 
