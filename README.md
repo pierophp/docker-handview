@@ -58,6 +58,10 @@ Crie os redirecionamentos de portas no VirtualBox:
 
 2376 -> 2376 - DOCKER
 
+<h3>Habilitando DNS no VirtualBox</h3>
+
+VBoxManage modifyvm "ubuntu-docker" --natdnshostresolver1 on
+
 <h2>VMware Fusion - MAC</h2>
 
 Para ter o boot2docker pré-instalado com o VMware Tools (necessário para compartilhar pasta com a VM), use essa ISO:
