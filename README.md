@@ -39,9 +39,29 @@ VBoxManage guestproperty get "ubuntu-docker" "/VirtualBox/GuestInfo/Net/0/V4/IP"
 
 https://docs.docker.com/articles/https/
 
-Crie os certificados de segurança.
-
 http://www.centurylinklabs.com/tutorials/docker-on-the-mac-without-boot2docker/
+
+Crie os certificados de segurança.
+<pre>
+mkdir /home/docker/.docker
+cd /home/docker/.docker
+#coloque uma senha
+openssl genrsa -aes256 -out ca-key.pem 4096
+#pedira a senha de cima, em Common Name coloque localhost
+openssl req -new -x509 -days 365 -key ca-key.pem -sha256 -out ca.pem
+openssl genrsa -out server-key.pem 4096
+openssl req -subj "/CN=localhost" -sha256 -new -key server-key.pem -out server.csr
+echo subjectAltName = IP:10.10.10.20,IP:127.0.0.1 > extfile.cnf
+openssl x509 -req -days 365 -sha256 -in server.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out server-cert.pem -extfile extfile.cnf
+#Para o client
+openssl genrsa -out key.pem 4096
+openssl req -subj '/CN=client' -new -key key.pem -out client.csr
+echo extendedKeyUsage = clientAuth > extfile.cnf
+openssl x509 -req -days 365 -sha256 -in client.csr -CA ca.pem -CAkey ca-key.pem -CAcreateserial -out cert.pem -extfile extfile.cnf
+rm -v client.csr server.csr
+chmod -v 0400 ca-key.pem key.pem server-key.pem
+chmod -v 0444 ca.pem server-cert.pem cert.pem
+</pre>
 
 Adicione no arquivo /etc/rc.local:
 <pre>
@@ -51,7 +71,7 @@ docker -d --tlsverify --tlscacert=/home/docker/.docker/ca.pem --tlscert=/home/do
 
 <h3>Configurando Client - MAC</h3>
 
-Copie os arquivos ca.pem, cert.pem e key.pem do Ubuntu para ~/.docker/certs
+Copie os arquivos <b>ca.pem</b>, <b>cert.pem</b> e <b>key.pem</b> do Ubuntu para ~/.docker/certs
 
 Adicione no arquivo ~/.profile
 
