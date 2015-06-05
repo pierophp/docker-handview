@@ -32,7 +32,7 @@ service docker stop
 
 docker -d --tlsverify --tlscacert=/home/docker/.docker/ca.pem --tlscert=/home/docker/.docker/server-cert.pem --tlskey=/home/docker/.docker/server-key.pem  -H=0.0.0.0:2376
 
-<h3>Configurando Client - MAC/h3>
+<h3>Configurando Client - MAC</h3>
 
 Copie os 3 arquivos de certificado  para ~/.docker/certs
 
