@@ -11,13 +11,13 @@ RUN apt-get update && \
 
 # Tools
 RUN apt-get update && \
-    apt-get install -y wget curl vim nano less unzip && \
+    apt-get install -y wget curl vim nano less unzip git && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 
 # PHP
 RUN apt-get update && \
-    apt-get install -y php5-fpm php5-cli php5-gd php5-mcrypt php5-mysql php5-curl && \
+    apt-get install -y php5-fpm php5-cli php5-gd php5-mcrypt php5-mysql php5-curl swig && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN sed -i 's/^listen\s*=.*$/listen = 127.0.0.1:9000/' /etc/php5/fpm/pool.d/www.conf && \
@@ -75,6 +75,22 @@ ADD supervisor/php5-fpm.conf /etc/supervisor/conf.d/php5-fpm.conf
 ADD supervisor/nginx.conf /etc/supervisor/conf.d/nginx.conf
 ADD supervisor/mysql.conf /etc/supervisor/conf.d/mysql.conf
 ADD supervisor/sshd.conf /etc/supervisor/conf.d/sshd.conf
+
+#Mega Client
+
+ENV LD_LIBRARY_PATH /usr/local/lib
+
+RUN apt-get update && \
+    apt-get install -y libcrypto++-dev dh-autoreconf sqlite3 libsqlite3-dev libc-ares-dev libcurl4-openssl-dev libfreeimage3 libfreeimage-dev libncurses5-dev libreadline-dev && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN git clone https://github.com/meganz/sdk.git ~/mega_sdk \
+    cd ~/mega_sdk && \
+    sh autogen.sh && \
+    ./configure && \
+    make && \
+    make install && \
+    rm -Rf ~/mega_sdk
 
 WORKDIR /var/www/handview/
 
