@@ -11,7 +11,7 @@ RUN apt-get update && \
 
 # Tools
 RUN apt-get update && \
-    apt-get install -y wget curl vim nano less unzip git && \
+    apt-get install -y wget curl vim nano less unzip git mlocate && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 
@@ -19,6 +19,9 @@ RUN apt-get update && \
 RUN apt-get update && \
     apt-get install -y php5-fpm php5-cli php5-gd php5-mcrypt php5-mysql php5-curl php5-dev swig && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
+
+#PHP Composer
+RUN curl -sS https://getcomposer.org/installer | php
 
 RUN sed -i 's/^listen\s*=.*$/listen = 127.0.0.1:9000/' /etc/php5/fpm/pool.d/www.conf && \
     sed -i 's/^\;error_log\s*=\s*syslog\s*$/error_log = \/var\/log\/php5\/cgi.log/' /etc/php5/fpm/php.ini && \
