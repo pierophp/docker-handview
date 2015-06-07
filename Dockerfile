@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM ubuntu:14.04
 MAINTAINER "Piero Giusti <pierophp@gmail.com>"
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -17,7 +17,7 @@ RUN apt-get update && \
 
 # PHP
 RUN apt-get update && \
-    apt-get install -y php5-fpm php5-cli php5-gd php5-mcrypt php5-mysql php5-curl swig && \
+    apt-get install -y php5-fpm php5-cli php5-gd php5-mcrypt php5-mysql php5-curl php5-dev swig && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN sed -i 's/^listen\s*=.*$/listen = 127.0.0.1:9000/' /etc/php5/fpm/pool.d/www.conf && \
@@ -87,7 +87,7 @@ RUN apt-get update && \
 RUN git clone https://github.com/meganz/sdk.git ~/mega_sdk \
     cd ~/mega_sdk && \
     sh autogen.sh && \
-    ./configure && \
+    ./configure --enable-php && \
     make && \
     make install && \
     rm -Rf ~/mega_sdk
