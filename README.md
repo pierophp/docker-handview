@@ -1,12 +1,12 @@
-<h1>Docker do Hand View</h1>
+# Docker do Hand View
 
-<h2>Introdução</h2>
+## Introdução
 
 Esse docker vem com o nginx + mysql e todas as outras ferramentas pré-instaladas pra rodar o Hand View.
 
-<h2>VirtualBox - Sem boot2docker</h2>
+## VirtualBox - Sem boot2docker
 
-<h3>Instalação Docker</h3>
+###  Instalação Docker
 
 Instale o Ubuntu Server e o SSH com um user docker.
 
@@ -67,7 +67,7 @@ service docker stop
 docker -d --tlsverify --tlscacert=/home/docker/.docker/ca.pem --tlscert=/home/docker/.docker/server-cert.pem --tlskey=/home/docker/.docker/server-key.pem  -H=0.0.0.0:2376 &
 </pre>
 
-<h3>Configurando Client - MAC</h3>
+### Configurando Client - MAC
 
 Copie os arquivos <b>ca.pem</b>, <b>cert.pem</b> e <b>key.pem</b> do Ubuntu para ~/.docker/certs
 
@@ -86,7 +86,7 @@ Crie os redirecionamentos de portas no VirtualBox:
 
 2376 -> 2376 - DOCKER
 
-<h2>VMware Fusion - MAC</h2>
+## VMware Fusion - MAC
 
 Para ter o boot2docker pré-instalado com o VMware Tools (necessário para compartilhar pasta com a VM), use essa ISO:
 
