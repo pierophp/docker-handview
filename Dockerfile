@@ -29,14 +29,14 @@ RUN apt-get update && \
     unlink /etc/php5/fpm/php.ini
 
 ADD php/fpm.conf /etc/php5/fpm/pool.d/fpm.conf    
-ADD php/php.ini /etc/php5/cli/php.ini    
 ADD php/php.ini /etc/php5/fpm/php.ini    
+ADD php/php.ini /etc/php5/cli/php.ini    
+
 
 #PHP Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-RUN sed -i 's/^listen\s*=.*$/listen = 127.0.0.1:9000/' /etc/php5/fpm/pool.d/www.conf && \
-    echo 'error_log=/var/log/php5/fpm.log' >> /etc/php5/fpm/php.ini && \
+RUN echo 'error_log=/var/log/php5/fpm.log' >> /etc/php5/fpm/php.ini && \
     echo 'error_log=/var/log/php5/cli.log' >>  /etc/php5/cli/php.ini && \
     mkdir /var/log/php5/ && \
     touch /var/log/php5/cli.log /var/log/php5/cgi.log && \
