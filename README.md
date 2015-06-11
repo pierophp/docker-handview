@@ -90,9 +90,37 @@ Crie os redirecionamentos de portas no VirtualBox:
 2376 -> 2376 - DOCKER
 
 ### Compartilhamento de pasta
+
+Instale o sshfs:
+`
+sudo apt-get install sshfs
+`
+
+Gere uma chave SSH:
+`
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+`
+
+Descubra o IP do seu MAC (local):
+`
+netstat -rn
+`
+
+Copie a chave SSH:
+`
+ssh-copy-id $user@$ipaddress
+`
+
+Crie a pasta osx:
 `
 mkdir ~/osx
 `
+
+Adicione no arquivo /etc/rc.local
+`
+sudo sshfs $user@$ipaddress:/Users/$username/ /home/docker/osx/
+`
+
 
 ## VMware Fusion - MAC
 
