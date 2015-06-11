@@ -98,6 +98,8 @@ sudo modprobe fuse
 sudo adduser docker fuse
 `
 
+Edite o arquivo /etc/fuse.conf e descomente a opção user_allow_other
+
 Gere uma chave SSH:
 
 `
