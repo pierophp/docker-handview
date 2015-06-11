@@ -74,13 +74,11 @@ Copie os arquivos <b>ca.pem</b>, <b>cert.pem</b> e <b>key.pem</b> do Ubuntu para
 
 Adicione no arquivo ~/.profile
 
-`
+```
 export DOCKER_HOST=tcp://127.0.0.1:2376
-
 export DOCKER_CERT_PATH=~/.docker/certs
-
 export DOCKER_TLS_VERIFY=1
-`
+```
 
 ### Redirecionamento de Portas
 
