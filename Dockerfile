@@ -14,14 +14,26 @@ RUN apt-get update && \
     apt-get install -y wget curl vim nano less unzip git mlocate && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
+#Config sudo
+RUN sed -i s/ALL$/NOPASSWD:ALL/g /etc/sudoers
+
+#Add user
+RUN useradd -ms /bin/bash handview -G sudo,ssh && echo 'handview:123' | chpasswd \
 
 # PHP
 RUN apt-get update && \
     apt-get install -y php5-fpm php5-cli php5-gd php5-mcrypt php5-mysql php5-curl php5-dev swig && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+    apt-get clean && rm -rf /var/lib/apt/lists/* && \
+    unlink /etc/php5/fpm/pool.d/www.conf && \
+    unlink /etc/php5/cli/php.ini && \
+    unlink /etc/php5/fpm/php.ini
+
+ADD php/fpm.conf /etc/php5/fpm/pool.d/fpm.conf    
+ADD php/php.ini /etc/php5/cli/php.ini    
+ADD php/php.ini /etc/php5/fpm/php.ini    
 
 #PHP Composer
-RUN curl -sS https://getcomposer.org/installer | php
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 RUN sed -i 's/^listen\s*=.*$/listen = 127.0.0.1:9000/' /etc/php5/fpm/pool.d/www.conf && \
     sed -i 's/^\;error_log\s*=\s*syslog\s*$/error_log = \/var\/log\/php5\/cgi.log/' /etc/php5/fpm/php.ini && \
@@ -80,7 +92,6 @@ ADD supervisor/mysql.conf /etc/supervisor/conf.d/mysql.conf
 ADD supervisor/sshd.conf /etc/supervisor/conf.d/sshd.conf
 
 #Mega Client
-
 ENV LD_LIBRARY_PATH /usr/local/lib
 
 RUN apt-get update && \
@@ -92,8 +103,10 @@ RUN git clone https://github.com/meganz/sdk.git ~/mega_sdk && \
     sh autogen.sh && \
     ./configure --enable-php && \
     make && \
-    make install && \
-    rm -Rf ~/mega_sdk
+    make install
+
+#Update locate
+RUN updatedb
 
 WORKDIR /var/www/handview/
 
