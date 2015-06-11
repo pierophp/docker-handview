@@ -92,11 +92,11 @@ Crie os redirecionamentos de portas no VirtualBox:
 
 Instale o sshfs:
 
-`
+```
 sudo apt-get install sshfs
 sudo modprobe fuse
 sudo adduser docker fuse
-`
+```
 
 Edite o arquivo /etc/fuse.conf e descomente a opção user_allow_other
 
