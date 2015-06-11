@@ -126,7 +126,7 @@ mkdir ~/osx
 Adicione no arquivo /etc/crontab:
 
 `
-@reboot docker sshfs $user@$ipaddress:/Users/$user/ /home/docker/osx/
+@reboot docker sshfs -o follow_symlinks $user@$ipaddress:/Users/$user/ /home/docker/osx/
 `
 
 
