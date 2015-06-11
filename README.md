@@ -33,7 +33,7 @@ Para descobrir o IP do VirtualBox;
 VBoxManage guestproperty get "ubuntu-docker" "/VirtualBox/GuestInfo/Net/0/V4/IP"
 </pre>
 
-<h3>Configurando Server - Ubuntu</h3>
+### Configurando Server - Ubuntu
 
 https://docs.docker.com/articles/https/
 
@@ -62,10 +62,11 @@ chmod -v 0444 ca.pem server-cert.pem cert.pem
 </pre>
 
 Adicione no arquivo /etc/rc.local:
-<pre>
+`
 service docker stop
+
 docker -d --tlsverify --tlscacert=/home/docker/.docker/ca.pem --tlscert=/home/docker/.docker/server-cert.pem --tlskey=/home/docker/.docker/server-key.pem  -H=0.0.0.0:2376 &
-</pre>
+`
 
 ### Configurando Client - MAC
 
@@ -73,18 +74,62 @@ Copie os arquivos <b>ca.pem</b>, <b>cert.pem</b> e <b>key.pem</b> do Ubuntu para
 
 Adicione no arquivo ~/.profile
 
-<pre>
+```
 export DOCKER_HOST=tcp://127.0.0.1:2376
 export DOCKER_CERT_PATH=~/.docker/certs
 export DOCKER_TLS_VERIFY=1
-</pre>
-<h3>Redirecionamento de Portas</h3>
+```
+
+### Redirecionamento de Portas
 
 Crie os redirecionamentos de portas no VirtualBox:
 
 2222 -> 22 - SSH
 
 2376 -> 2376 - DOCKER
+
+### Compartilhamento de pasta
+
+Instale o sshfs:
+
+`
+sudo apt-get install sshfs
+sudo modprobe fuse
+sudo adduser docker fuse
+`
+
+Edite o arquivo /etc/fuse.conf e descomente a opção user_allow_other
+
+Gere uma chave SSH:
+
+`
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+`
+
+Descubra o IP do seu MAC (local):
+
+`
+netstat -rn
+`
+
+Copie a chave SSH:
+
+`
+ssh-copy-id $user@$ipaddress
+`
+
+Crie a pasta osx:
+
+`
+mkdir ~/osx
+`
+
+Adicione no arquivo /etc/crontab:
+
+`
+@reboot docker sshfs -o allow_other -o follow_symlinks $user@$ipaddress:/Users/$user/ /home/docker/osx/
+`
+
 
 ## VMware Fusion - MAC
 
