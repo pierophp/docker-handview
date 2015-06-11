@@ -92,33 +92,41 @@ Crie os redirecionamentos de portas no VirtualBox:
 ### Compartilhamento de pasta
 
 Instale o sshfs:
+
 `
 sudo apt-get install sshfs
+sudo modprobe fuse
+sudo adduser docker fuse
 `
 
 Gere uma chave SSH:
+
 `
 ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
 `
 
 Descubra o IP do seu MAC (local):
+
 `
 netstat -rn
 `
 
 Copie a chave SSH:
+
 `
 ssh-copy-id $user@$ipaddress
 `
 
 Crie a pasta osx:
+
 `
 mkdir ~/osx
 `
 
-Adicione no arquivo /etc/rc.local
+Adicione no arquivo /etc/rc.local:
+
 `
-sudo sshfs $user@$ipaddress:/Users/$username/ /home/docker/osx/
+sshfs $user@$ipaddress:/Users/$username/ /home/docker/osx/
 `
 
 
