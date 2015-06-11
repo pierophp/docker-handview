@@ -36,8 +36,8 @@ ADD php/php.ini /etc/php5/fpm/php.ini
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 RUN sed -i 's/^listen\s*=.*$/listen = 127.0.0.1:9000/' /etc/php5/fpm/pool.d/www.conf && \
-    sed -i 's/^\;error_log\s*=\s*syslog\s*$/error_log = \/var\/log\/php5\/cgi.log/' /etc/php5/fpm/php.ini && \
-    sed -i 's/^\;error_log\s*=\s*syslog\s*$/error_log = \/var\/log\/php5\/cli.log/' /etc/php5/cli/php.ini && \
+    echo 'error_log=/var/log/php5/fpm.log' >> /etc/php5/fpm/php.ini && \
+    echo 'error_log=/var/log/php5/cli.log' >>  /etc/php5/cli/php.ini && \
     mkdir /var/log/php5/ && \
     touch /var/log/php5/cli.log /var/log/php5/cgi.log && \
     chown www-data:www-data /var/log/php5/cgi.log /var/log/php5/cli.log    
