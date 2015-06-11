@@ -73,6 +73,7 @@ docker -d --tlsverify --tlscacert=/home/docker/.docker/ca.pem --tlscert=/home/do
 Copie os arquivos <b>ca.pem</b>, <b>cert.pem</b> e <b>key.pem</b> do Ubuntu para ~/.docker/certs
 
 Adicione no arquivo ~/.profile
+
 `
 export DOCKER_HOST=tcp://127.0.0.1:2376
 
