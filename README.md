@@ -123,10 +123,10 @@ Crie a pasta osx:
 mkdir ~/osx
 `
 
-Adicione no arquivo /etc/rc.local:
+Adicione no arquivo /etc/crontab:
 
 `
-sshfs $user@$ipaddress:/Users/$username/ /home/docker/osx/
+@reboot docker sshfs $user@$ipaddress:/Users/$user/ /home/docker/osx/
 `
 
 
