@@ -18,7 +18,7 @@ RUN apt-get update && \
 RUN sed -i s/ALL$/NOPASSWD:ALL/g /etc/sudoers
 
 #Add user
-RUN useradd -ms /bin/bash handview -G sudo,ssh && echo 'handview:123' | chpasswd \
+RUN useradd -ms /bin/bash handview -G sudo,ssh && echo 'handview:123' | chpasswd
 
 # PHP
 RUN apt-get update && \
