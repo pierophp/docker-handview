@@ -77,9 +77,9 @@ RUN mkdir -p /var/www/phpmyadmin && \
     rm -rf *.md .coveralls.yml ChangeLog composer.json config.sample.inc.php DCO doc examples phpunit.* README RELEASE-DATE-* setup
 ADD nginx/config.inc.php /var/www/phpmyadmin/
 
-# Avconv && Mp4v2
+# Avconv && Mp4v2 && DVDAuthor
 RUN apt-get update && \ 
-    apt-get install -y libav-tools mp4v2-utils  && \
+    apt-get install -y libav-tools mp4v2-utils dvdauthor && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Supervisor
