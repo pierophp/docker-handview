@@ -62,11 +62,10 @@ chmod -v 0444 ca.pem server-cert.pem cert.pem
 </pre>
 
 Adicione no arquivo /etc/rc.local:
-`
+```
 service docker stop
-
 docker -d --tlsverify --tlscacert=/home/docker/.docker/ca.pem --tlscert=/home/docker/.docker/server-cert.pem --tlskey=/home/docker/.docker/server-key.pem  -H=0.0.0.0:2376 &
-`
+```
 
 ### Configurando Client - MAC
 
@@ -92,11 +91,11 @@ Crie os redirecionamentos de portas no VirtualBox:
 
 Instale o sshfs:
 
-`
+```
 sudo apt-get install sshfs
 sudo modprobe fuse
 sudo adduser docker fuse
-`
+```
 
 Edite o arquivo /etc/fuse.conf e descomente a opção user_allow_other
 
