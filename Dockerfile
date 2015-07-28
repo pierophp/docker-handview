@@ -4,7 +4,7 @@ MAINTAINER "Piero Giusti <pierophp@gmail.com>"
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
 
-# Upgrade 
+# Upgrade
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -20,27 +20,81 @@ RUN sed -i s/ALL$/NOPASSWD:ALL/g /etc/sudoers
 #Add user
 RUN useradd -ms /bin/bash handview -G sudo,ssh && echo 'handview:123' | chpasswd
 
-# PHP
+## PHP 7 Dependencies
+# persistent / runtime deps
 RUN apt-get update && \
-    apt-get install -y php5-fpm php5-cli php5-gd php5-mcrypt php5-mysql php5-curl php5-dev swig && \
-    apt-get clean && rm -rf /var/lib/apt/lists/* && \
-    unlink /etc/php5/fpm/pool.d/www.conf && \
-    unlink /etc/php5/cli/php.ini && \
-    unlink /etc/php5/fpm/php.ini
+    apt-get install -y ca-certificates libpcre3 librecode0 libsqlite3-0 libxml2 --no-install-recommends && \
+    rm -r /var/lib/apt/lists/*
 
-ADD php/fpm.conf /etc/php5/fpm/pool.d/fpm.conf    
-ADD php/php.ini /etc/php5/fpm/php.ini    
-ADD php/php.ini /etc/php5/cli/php.ini    
+# phpize deps
+RUN apt-get update && \
+    apt-get install -y autoconf file g++ gcc libc-dev make pkg-config re2c --no-install-recommends && \
+    rm -r /var/lib/apt/lists/*
+
+ENV PHP_INI_DIR /usr/local/etc/php
+RUN mkdir -p $PHP_INI_DIR/conf.d
+ENV PHP_EXTRA_CONFIGURE_ARGS --enable-fpm --with-fpm-user=www-data --with-fpm-group=www-data
+ENV PHP_VERSION 7.0.0beta2
+
+RUN buildDeps=" \
+		$PHP_EXTRA_BUILD_DEPS \
+		libcurl4-openssl-dev \
+		libpcre3-dev \
+		libreadline6-dev \
+		librecode-dev \
+		libsqlite3-dev \
+		libssl-dev \
+		libxml2-dev \
+		xz-utils \
+	" \
+	&& set -x \
+	&& apt-get update && apt-get install -y $buildDeps --no-install-recommends && rm -rf /var/lib/apt/lists/* \
+	&& curl -SL "https://downloads.php.net/~ab/php-$PHP_VERSION.tar.xz" -o php.tar.xz \
+	&& mkdir -p /usr/src/php \
+	&& tar -xof php.tar.xz -C /usr/src/php --strip-components=1 \
+	&& rm php.tar.xz* \
+	&& cd /usr/src/php \
+	&& ./configure \
+		--with-config-file-path="$PHP_INI_DIR" \
+		--with-config-file-scan-dir="$PHP_INI_DIR/conf.d" \
+		$PHP_EXTRA_CONFIGURE_ARGS \
+		--disable-cgi \
+		--enable-mysqlnd \
+		--with-curl \
+		--with-openssl \
+		--with-pcre \
+		--with-readline \
+		--with-recode \
+		--with-zlib \
+	&& make -j"$(nproc)" \
+	&& make install \
+	&& { find /usr/local/bin /usr/local/sbin -type f -executable -exec strip --strip-all '{}' + || true; } \
+	&& apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false -o APT::AutoRemove::SuggestsImportant=false $buildDeps \
+	&& make clean
+
+# PHP 5
+# RUN echo "deb http://repos.zend.com/zend-server/early-access/php7/repos ubuntu/" >> /etc/apt/sources.list && \
+#    apt-get update && \
+#    apt-get install -y php5-fpm php5-cli php5-gd php5-mcrypt php5-mysql php5-curl php5-dev swig && \
+#    apt-get clean && rm -rf /var/lib/apt/lists/* && \
+#    unlink /etc/php/7.0/fpm/pool.d/www.conf && \
+#    unlink /etc/php/7.0/cli/php.ini && \
+#    unlink /etc/php/7.0/fpm/php.ini
+
+#ADD php/fpm.conf /etc/php/7.0/fpm/pool.d/fpm.conf
+ADD php/fpm.conf /usr/local/etc/php-fpm.conf
+ADD php/php.ini /etc/php/7.0/fpm/php.ini
+ADD php/php.ini /etc/php/7.0/cli/php.ini
 
 
 #PHP Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+#RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-RUN echo 'error_log=/var/log/php5/fpm.log' >> /etc/php5/fpm/php.ini && \
-    echo 'error_log=/var/log/php5/cli.log' >>  /etc/php5/cli/php.ini && \
-    mkdir /var/log/php5/ && \
-    touch /var/log/php5/cli.log /var/log/php5/cgi.log && \
-    chown www-data:www-data /var/log/php5/cgi.log /var/log/php5/cli.log    
+RUN echo 'error_log=/var/log/php/fpm.log' >> /etc/php/7.0/fpm/php.ini && \
+    echo 'error_log=/var/log/php/cli.log' >>  /etc/php/7.0/cli/php.ini && \
+    mkdir /var/log/php/ && \
+    touch /var/log/php/cli.log /var/log/php/cgi.log && \
+    chown www-data:www-data /var/log/php/cgi.log /var/log/php/cli.log
 
 # Nginx
 RUN apt-get update && \
@@ -61,7 +115,7 @@ RUN sed -i 's/^key_buffer\s*=/key_buffer_size =/' /etc/mysql/my.cnf
 RUN chown -R mysql:mysql /var/lib/mysql
 
 # SSHD
-RUN apt-get update && \ 
+RUN apt-get update && \
     apt-get install -y openssh-client openssh-server && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN mkdir /var/run/sshd
@@ -78,7 +132,7 @@ RUN mkdir -p /var/www/phpmyadmin && \
 ADD nginx/config.inc.php /var/www/phpmyadmin/
 
 # Avconv && Mp4v2 && DVDAuthor
-RUN apt-get update && \ 
+RUN apt-get update && \
     apt-get install -y libav-tools mp4v2-utils dvdauthor && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
