@@ -90,21 +90,6 @@ ADD supervisor/php5-fpm.conf /etc/supervisor/conf.d/php5-fpm.conf
 ADD supervisor/nginx.conf /etc/supervisor/conf.d/nginx.conf
 ADD supervisor/mysql.conf /etc/supervisor/conf.d/mysql.conf
 ADD supervisor/sshd.conf /etc/supervisor/conf.d/sshd.conf
-
-#Mega Client
-ENV LD_LIBRARY_PATH /usr/local/lib
-
-RUN apt-get update && \
-    apt-get install -y libcrypto++-dev dh-autoreconf sqlite3 libsqlite3-dev libc-ares-dev libcurl4-openssl-dev libfreeimage3 libfreeimage-dev libncurses5-dev libreadline-dev && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
-
-RUN git clone https://github.com/meganz/sdk.git ~/mega_sdk && \
-    cd ~/mega_sdk && \
-    sh autogen.sh && \
-    ./configure --enable-php && \
-    make && \
-    make install
-
 #Update locate
 RUN updatedb
 
