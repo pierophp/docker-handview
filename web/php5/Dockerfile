@@ -14,14 +14,14 @@ RUN apt-get update && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 #Config sudo
-RUN sed -i s/ALL$/NOPASSWD:ALL/g /etc/sudoers
+#RUN sed -i s/ALL$/NOPASSWD:ALL/g /etc/sudoers
 
 #Add user
 RUN useradd -ms /bin/bash dev -G sudo,ssh && echo 'dev:123' | chpasswd
 
 # PHP
 RUN apt-get update && \
-    apt-get install -y php5-fpm php5-cli php5-gd php5-mcrypt php5-mysql php5-curl php5-dev swig && \
+    apt-get install -y php5-fpm php5-cli php5-gd php5-mcrypt php5-mysql php5-curl php5-dev && \
     apt-get clean && rm -rf /var/lib/apt/lists/* && \
     unlink /etc/php5/fpm/pool.d/www.conf && \
     unlink /etc/php5/cli/php.ini && \
@@ -46,7 +46,7 @@ RUN apt-get update && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN unlink /etc/nginx/sites-enabled/default
 ADD nginx/default /etc/nginx/sites-enabled/default
-RUN mkdir /var/www/
+
 RUN chown -R www-data:www-data /var/www/
 
 # MySql
@@ -59,12 +59,13 @@ RUN sed -i 's/^key_buffer\s*=/key_buffer_size =/' /etc/mysql/my.cnf
 RUN chown -R mysql:mysql /var/lib/mysql
 
 # PHPMyAdmin
-ENV VERSION 4.4.3
-RUN mkdir -p /var/www/phpmyadmin && \
-    cd /var/www/phpmyadmin && \
-    wget -O - "http://www.sourceforge.net/projects/phpmyadmin/files/phpMyAdmin/${VERSION}/phpMyAdmin-${VERSION}-all-languages.tar.gz/download" | tar --strip-components=1 -x -z && \
-    rm -rf *.md .coveralls.yml ChangeLog composer.json config.sample.inc.php DCO doc examples phpunit.* README RELEASE-DATE-* setup
-ADD nginx/config.inc.php /var/www/phpmyadmin/
+#ENV VERSION 4.5.1
+#RUN mkdir -p /var/www/phpmyadmin && \
+#    cd /var/www/phpmyadmin && \
+#    wget "https://files.phpmyadmin.net/phpMyAdmin/${VERSION}/phpMyAdmin-${VERSION}-all-languages.zip" && \
+#    unzip phpMyAdmin-${VERSION}-all-languages.zip && \
+#    rm -rf *.md .coveralls.yml ChangeLog composer.json config.sample.inc.php DCO doc examples phpunit.* README RELEASE-DATE-* setup
+#ADD nginx/config.inc.php /var/www/phpmyadmin/
 
 # Supervisor
 RUN apt-get update && \
@@ -77,11 +78,7 @@ ADD supervisor/mysql.conf /etc/supervisor/conf.d/mysql.conf
 #Update locate
 RUN updatedb
 
-WORKDIR /var/www/html/
-
-# isso faz que nao seja comitado
-# VOLUME /var/www/
-# VOLUME /var/lib/mysql/
+WORKDIR /var/www/
 
 EXPOSE 80
 EXPOSE 3306
