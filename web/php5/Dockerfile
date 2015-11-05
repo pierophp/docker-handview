@@ -59,13 +59,16 @@ RUN sed -i 's/^key_buffer\s*=/key_buffer_size =/' /etc/mysql/my.cnf
 RUN chown -R mysql:mysql /var/lib/mysql
 
 # PHPMyAdmin
-#ENV VERSION 4.5.1
-#RUN mkdir -p /var/www/phpmyadmin && \
-#    cd /var/www/phpmyadmin && \
-#    wget "https://files.phpmyadmin.net/phpMyAdmin/${VERSION}/phpMyAdmin-${VERSION}-all-languages.zip" && \
-#    unzip phpMyAdmin-${VERSION}-all-languages.zip && \
-#    rm -rf *.md .coveralls.yml ChangeLog composer.json config.sample.inc.php DCO doc examples phpunit.* README RELEASE-DATE-* setup
-#ADD nginx/config.inc.php /var/www/phpmyadmin/
+ENV VERSION 4.5.1
+RUN mkdir -p /var/www/phpmyadmin && \
+    cd /var/www/phpmyadmin && \
+    wget "https://files.phpmyadmin.net/phpMyAdmin/${VERSION}/phpMyAdmin-${VERSION}-all-languages.zip" && \
+    unzip phpMyAdmin-${VERSION}-all-languages.zip && \
+    mv phpMyAdmin-${VERSION}-all-languages/* /var/www/phpmyadmin && \
+    rm -rf phpMyAdmin-${VERSION}-all-languages/ && \
+    rm -rf phpMyAdmin-${VERSION}-all-languages.zip && \
+    rm -rf *.md .coveralls.yml ChangeLog composer.json config.sample.inc.php DCO doc examples phpunit.* README RELEASE-DATE-* setup
+ADD nginx/config.inc.php /var/www/phpmyadmin/
 
 # Supervisor
 RUN apt-get update && \
