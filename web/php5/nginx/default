@@ -8,8 +8,7 @@ server {
     charset utf8;
 
     location / {
-        gzip on;
-        try_files $uri $uri/ /index.html /index.php?$query_string;
+        try_files $uri $uri/ /index.php$is_args$args;
     }
 
     location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$ {
@@ -20,7 +19,7 @@ server {
     location ~ .*\.(js|css)?$ {
         expires      1h;
     }
-    
+
     # pass the PHP scripts to FastCGI server from upstream phpfcgi
     location ~* \.php(/|$) {
       fastcgi_pass 127.0.0.1:9000;

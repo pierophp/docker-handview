@@ -8,7 +8,6 @@ server {
     charset utf8;
 
     location / {
-
         gzip on;
         try_files $uri $uri/ /index.html /index.php?$query_string;
 
