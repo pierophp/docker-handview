@@ -25,7 +25,7 @@ ENV NGINX_VERSION 1.9.6-1~jessie
 RUN apt-get update && \
     apt-get install -y ca-certificates nginx=${NGINX_VERSION} && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
-RUN unlink /etc/nginx/sites-enabled/default
+#RUN unlink /etc/nginx/sites-enabled/default
 ADD nginx/default /etc/nginx/sites-enabled/default
 
 RUN chown -R dev:dev /var/www/
