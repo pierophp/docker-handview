@@ -56,12 +56,15 @@ RUN buildDeps=" \
 		$PHP_EXTRA_CONFIGURE_ARGS \
 		--disable-cgi \
 		--enable-mysqlnd \
+    --enable-mbstring \
+    --enable-pdo \
 		--with-curl \
 		--with-openssl \
-		--with-pcre \
 		--with-readline \
 		--with-recode \
 		--with-zlib \
+    --with-mysqli=mysqlnd \
+    --with-pdo-mysql=mysqlnd \
 	&& make -j"$(nproc)" \
 	&& make install \
 	&& { find /usr/local/bin /usr/local/sbin -type f -executable -exec strip --strip-all '{}' + || true; } \
@@ -69,8 +72,10 @@ RUN buildDeps=" \
 	&& make clean
 
 ADD php/fpm.conf /usr/local/etc/php-fpm.conf
-ADD php/php.ini /etc/php/7.0/fpm/php.ini
-ADD php/php.ini /etc/php/7.0/cli/php.ini
+ADD php/php.ini /usr/local/etc/php/conf.d/php.ini
+
+#ADD php/php.ini /etc/php/7.0/fpm/php.ini
+#ADD php/php.ini /etc/php/7.0/cli/php.ini
 
 #PHP Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
