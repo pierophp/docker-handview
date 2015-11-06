@@ -58,6 +58,7 @@ RUN buildDeps=" \
 		--enable-mysqlnd \
     --enable-mbstring \
     --enable-pdo \
+    --enable-soap \
 		--with-curl \
 		--with-openssl \
 		--with-readline \
@@ -74,17 +75,15 @@ RUN buildDeps=" \
 ADD php/fpm.conf /usr/local/etc/php-fpm.conf
 ADD php/php.ini /usr/local/etc/php/conf.d/php.ini
 
-#ADD php/php.ini /etc/php/7.0/fpm/php.ini
-#ADD php/php.ini /etc/php/7.0/cli/php.ini
-
 #PHP Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-RUN echo 'error_log=/var/log/php/fpm.log' >> /etc/php/7.0/fpm/php.ini && \
-    echo 'error_log=/var/log/php/cli.log' >>  /etc/php/7.0/cli/php.ini && \
-    mkdir /var/log/php/ && \
-    touch /var/log/php/cli.log /var/log/php/cgi.log && \
-    chown www-data:www-data /var/log/php/cgi.log /var/log/php/cli.log
+RUN mkdir /var/log/php/ && \
+    touch /var/log/php/fpm.log && \
+    chown www-data:www-data /var/log/php/fpm.log && \
+    mkdir /tmp/sessions && \
+    chown -R dev:dev /tmp/sessions && \
+    chmod 777 -R  /tmp/sessions
 
 # Nginx
 RUN apt-get update && \
@@ -93,7 +92,7 @@ RUN apt-get update && \
 RUN unlink /etc/nginx/sites-enabled/default
 ADD nginx/default /etc/nginx/sites-enabled/default
 
-RUN chown -R www-data:www-data /var/www/
+RUN chown -R dev:dev /var/www/
 
 # MySql
 RUN apt-get update && \
@@ -115,6 +114,15 @@ RUN mkdir -p /var/www/phpmyadmin && \
     rm -rf phpMyAdmin-${VERSION}-all-languages.zip && \
     rm -rf *.md .coveralls.yml ChangeLog composer.json config.sample.inc.php DCO doc examples phpunit.* README RELEASE-DATE-* setup
 ADD nginx/config.inc.php /var/www/phpmyadmin/
+
+#PHPRedis
+RUN cd /tmp && \
+    git clone -b php7 https://github.com/phpredis/phpredis.git && \
+    cd /tmp/phpredis && \
+    phpize && \
+    ./configure && \
+    make && make install && \
+    rm -Rf /tmp/phpredis
 
 # Supervisor
 RUN apt-get update && \
