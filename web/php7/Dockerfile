@@ -16,9 +16,14 @@ RUN apt-get update && \
 #Add user
 RUN useradd -ms /bin/bash dev -G sudo,ssh && echo 'dev:123' | chpasswd
 
+RUN apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62
+RUN echo "deb http://nginx.org/packages/mainline/debian/ jessie nginx" >> /etc/apt/sources.list
+
+ENV NGINX_VERSION 1.9.6-1~jessie
+
 # Nginx
 RUN apt-get update && \
-    apt-get install -y nginx && \
+    apt-get install -y ca-certificates nginx=${NGINX_VERSION} && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN unlink /etc/nginx/sites-enabled/default
 ADD nginx/default /etc/nginx/sites-enabled/default
@@ -59,7 +64,7 @@ ADD supervisor/mysql.conf /etc/supervisor/conf.d/mysql.conf
 ## PHP 7 Dependencies
 # persistent / runtime deps
 RUN apt-get update && \
-    apt-get install -y ca-certificates libpcre3 librecode0 libsqlite3-0 libxml2 --no-install-recommends && \
+    apt-get install -y libpcre3 librecode0 libsqlite3-0 libxml2 --no-install-recommends && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # phpize deps
