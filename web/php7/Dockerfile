@@ -28,7 +28,7 @@ RUN apt-get update && \
 #RUN unlink /etc/nginx/sites-enabled/default
 ADD nginx/default /etc/nginx/sites-enabled/default
 
-RUN chown -R dev:dev /var/www/
+RUN mkdir /var/www && chown -R dev:dev /var/www/
 
 # MySql
 RUN apt-get update && \
@@ -49,7 +49,7 @@ RUN mkdir -p /var/www/phpmyadmin && \
     rm -rf phpMyAdmin-${VERSION}-all-languages/ && \
     rm -rf phpMyAdmin-${VERSION}-all-languages.zip && \
     rm -rf *.md .coveralls.yml ChangeLog composer.json config.sample.inc.php DCO doc examples phpunit.* README RELEASE-DATE-* setup
-ADD nginx/config.inc.php /var/www/phpmyadmin/
+ADD phpmyadmin/config.inc.php /var/www/phpmyadmin/
 
 
 # Supervisor
