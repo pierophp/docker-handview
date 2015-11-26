@@ -75,7 +75,7 @@ RUN apt-get update && \
 ENV PHP_INI_DIR /usr/local/etc/php
 RUN mkdir -p $PHP_INI_DIR/conf.d
 ENV PHP_EXTRA_CONFIGURE_ARGS --enable-fpm --with-fpm-user=www-data --with-fpm-group=www-data
-ENV PHP_VERSION 7.0.0RC7
+ENV PHP_VERSION 7.0.0RC8
 
 #PHP Build Deps
 RUN buildDeps=" \
