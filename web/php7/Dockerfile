@@ -2,6 +2,8 @@ FROM debian:jessie
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
+ENV NGINX_VERSION 1.9.9-1~jessie
+ENV PHP_VERSION 7.0.2
 
 # Upgrade
 RUN apt-get update && \
@@ -19,7 +21,6 @@ RUN useradd -ms /bin/bash dev -G sudo,ssh && echo 'dev:123' | chpasswd
 RUN apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62
 RUN echo "deb http://nginx.org/packages/mainline/debian/ jessie nginx" >> /etc/apt/sources.list
 
-ENV NGINX_VERSION 1.9.6-1~jessie
 
 # Nginx
 RUN apt-get update && \
@@ -75,7 +76,7 @@ RUN apt-get update && \
 ENV PHP_INI_DIR /usr/local/etc/php
 RUN mkdir -p $PHP_INI_DIR/conf.d
 ENV PHP_EXTRA_CONFIGURE_ARGS --enable-fpm --with-fpm-user=www-data --with-fpm-group=www-data
-ENV PHP_VERSION 7.0.2
+
 
 #PHP Build Deps
 RUN buildDeps=" \
