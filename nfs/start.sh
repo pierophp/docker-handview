@@ -4,5 +4,5 @@ docker run -d \
      -v /home/docker:/docker \
      --name nfs \
      --hostname nfs \
-     --privileged
+     --privileged \
      pierophp/nfs

@@ -29,5 +29,5 @@ EXPOSE 111/udp 2049/tcp
 
 #RUN sed -i 's/^RPCMOUNTDOPTS=.*/RPCMOUNTDOPTS="--manage-gids --port 2233"/' /etc/default/nfs-kernel-server
 
-ADD supervisor/* /etc/supervisord.d/
+ADD supervisor/* /etc/supervisor/conf.d/
 CMD ["/usr/bin/supervisord", "--nodaemon", "-c", "/etc/supervisor/supervisord.conf"]
