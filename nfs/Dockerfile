@@ -30,6 +30,8 @@ RUN mkdir -p /export/docker
 ADD nfs-run.sh /usr/local/bin/nfs-run
 ADD nfs/exports /etc/exports
 
+RUN exportfs -a
+
 RUN chmod +x /usr/local/bin/nfs-run
 
 EXPOSE 111/udp 2049/tcp
