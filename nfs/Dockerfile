@@ -19,15 +19,20 @@ RUN apt-get update && \
     apt-get install -y supervisor && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /export
-RUN echo "/docker /export/docker none bind 0 0" >> /etc/fstab
+# Tools
+RUN apt-get update && \
+    apt-get install -y nano wget curl && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /export/docker
+RUN mount --bind /docker /export/docker
 
 ADD nfs-run.sh /usr/local/bin/nfs-run
+ADD nfs/exports /etc/exports
+
 RUN chmod +x /usr/local/bin/nfs-run
 
 EXPOSE 111/udp 2049/tcp
-
-#RUN sed -i 's/^RPCMOUNTDOPTS=.*/RPCMOUNTDOPTS="--manage-gids --port 2233"/' /etc/default/nfs-kernel-server
 
 ADD supervisor/* /etc/supervisor/conf.d/
 CMD ["/usr/bin/supervisord", "--nodaemon", "-c", "/etc/supervisor/supervisord.conf"]
