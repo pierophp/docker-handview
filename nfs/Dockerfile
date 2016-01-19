@@ -14,13 +14,16 @@ RUN apt-get update && \
     apt-get install -y nfs-kernel-server && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-    # Supervisor
+# Supervisor
 RUN apt-get update && \
     apt-get install -y supervisor && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /export
-RUN echo "/docker /export/docker   none    bind  0  0" >> /etc/fstab
+RUN echo "/docker /export/docker none bind 0 0" >> /etc/fstab
+
+ADD nfs-run.sh /usr/local/bin/nfs-run
+RUN chmod +x /usr/local/bin/nfs-run
 
 EXPOSE 111/udp 2049/tcp
 
