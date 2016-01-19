@@ -25,7 +25,7 @@ RUN apt-get update && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /export/docker
-RUN mount --bind /docker /export/docker
+#RUN mount --bind /docker /export/docker
 
 ADD nfs-run.sh /usr/local/bin/nfs-run
 ADD nfs/exports /etc/exports
