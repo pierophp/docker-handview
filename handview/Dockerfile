@@ -1,18 +1,18 @@
-FROM ubuntu:14.04
+FROM ubuntu:16.04
 MAINTAINER "Piero Giusti <pierophp@gmail.com>"
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
 
 # Upgrade
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt update && \
+    apt upgrade -y && \
+    apt clean && rm -rf /var/lib/apt/lists/*
 
 # Tools
-RUN apt-get update && \
-    apt-get install -y wget curl vim nano less unzip git mlocate && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt update && \
+    apt install -y wget curl vim nano less unzip git mlocate && \
+    apt clean && rm -rf /var/lib/apt/lists/*
 
 #Config sudo
 RUN sed -i s/ALL$/NOPASSWD:ALL/g /etc/sudoers
@@ -22,25 +22,25 @@ RUN useradd -ms /bin/bash handview -G sudo,ssh && echo 'handview:123' | chpasswd
 
 # PHP
 RUN apt-get update && \
-    apt-get install -y php5-fpm php5-cli php5-gd php5-mcrypt php5-mysql php5-curl php5-dev swig && \
+    apt-get install -y php7.0-fpm php7.0-cli php7.0-gd php7.0-mcrypt php7.0-mysql php7.0-curl php7.0-intl php7.0-json && \
     apt-get clean && rm -rf /var/lib/apt/lists/* && \
-    unlink /etc/php5/fpm/pool.d/www.conf && \
-    unlink /etc/php5/cli/php.ini && \
-    unlink /etc/php5/fpm/php.ini
+    unlink /etc/php/7.0/fpm/pool.d/www.conf && \
+    unlink /etc/php/7.0/cli/php.ini && \
+    unlink /etc/php/7.0/fpm/php.ini
 
-ADD php/fpm.conf /etc/php5/fpm/pool.d/fpm.conf
-ADD php/php.ini /etc/php5/fpm/php.ini
-ADD php/php.ini /etc/php5/cli/php.ini
+ADD php/fpm.conf /etc/php/7.0/fpm/pool.d/fpm.conf
+ADD php/php.ini /etc/php/7.0/fpm/php.ini
+ADD php/php.ini /etc/php/7.0/cli/php.ini
 
 
 #PHP Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-RUN echo 'error_log=/var/log/php5/fpm.log' >> /etc/php5/fpm/php.ini && \
-    echo 'error_log=/var/log/php5/cli.log' >>  /etc/php5/cli/php.ini && \
-    mkdir /var/log/php5/ && \
-    touch /var/log/php5/cli.log /var/log/php5/cgi.log && \
-    chown www-data:www-data /var/log/php5/cgi.log /var/log/php5/cli.log
+RUN echo 'error_log=/var/log/php/fpm.log' >> /etc/php/7.0/fpm/php.ini && \
+    echo 'error_log=/var/log/php/cli.log' >>  /etc/php/7.0/cli/php.ini && \
+    mkdir /var/log/php/ && \
+    touch /var/log/php/cli.log /var/log/php/fpm.log && \
+    chown www-data:www-data /var/log/php/fpm.log /var/log/php/cli.log
 
 # Nginx
 RUN apt-get update && \
@@ -70,7 +70,7 @@ RUN sed -ri 's/^PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config
 RUN sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config
 
 # PHPMyAdmin
-ENV VERSION 4.5.1
+ENV VERSION 4.5.5.1
 RUN mkdir -p /var/www/phpmyadmin && \
     cd /var/www/phpmyadmin && \
     wget "https://files.phpmyadmin.net/phpMyAdmin/${VERSION}/phpMyAdmin-${VERSION}-all-languages.zip" && \
