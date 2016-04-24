@@ -22,7 +22,7 @@ RUN useradd -ms /bin/bash handview -G sudo,ssh && echo 'handview:123' | chpasswd
 
 # PHP
 RUN apt-get update && \
-    apt-get install -y php7.0-fpm php7.0-cli php7.0-gd php7.0-mcrypt php7.0-mysql php7.0-curl php7.0-intl php7.0-json php7.0-xmlrpc && \
+    apt-get install -y php7.0-fpm php7.0-cli php7.0-gd php7.0-mcrypt php7.0-mysql php7.0-curl php7.0-intl php7.0-json php7.0-xml && \
     apt-get clean && rm -rf /var/lib/apt/lists/* && \
     unlink /etc/php/7.0/fpm/pool.d/www.conf && \
     unlink /etc/php/7.0/cli/php.ini && \
