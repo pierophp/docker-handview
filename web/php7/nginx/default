@@ -1,6 +1,7 @@
 server {
     listen 80;
     client_max_body_size 10G;
+    fastcgi_read_timeout 3600;
 
     index index.html index.php;
 
