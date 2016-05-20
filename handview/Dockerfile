@@ -48,7 +48,6 @@ RUN apt-get update && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN unlink /etc/nginx/sites-enabled/default
 ADD nginx/default /etc/nginx/sites-enabled/default
-RUN mkdir /var/www/
 RUN chown -R www-data:www-data /var/www/
 
 # MySql
