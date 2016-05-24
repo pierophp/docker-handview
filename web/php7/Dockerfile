@@ -26,7 +26,7 @@ RUN unlink /etc/nginx/sites-enabled/default
 ADD nginx/default /etc/nginx/sites-enabled/default
 RUN chown -R www-data:www-data /var/www/
 
-RUN mkdir /var/www && chown -R dev:dev /var/www/
+RUN chown -R dev:dev /var/www/
 
 # MySql
 RUN apt-get update && \
