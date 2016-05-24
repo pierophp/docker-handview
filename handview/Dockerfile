@@ -21,9 +21,9 @@ RUN apt update && \
 RUN useradd -ms /bin/bash handview -G sudo,ssh && echo 'handview:123' | chpasswd
 
 # PHP
-RUN apt-get update && \
-    apt-get install -y php7.0-fpm php7.0-cli php7.0-gd php7.0-mcrypt php7.0-mysql php7.0-curl php7.0-intl php7.0-json php7.0-xml php7.0-mbstring php7.0-zip && \
-    apt-get clean && rm -rf /var/lib/apt/lists/* && \
+RUN apt update && \
+    apt install -y php7.0-fpm php7.0-cli php7.0-gd php7.0-mcrypt php7.0-mysql php7.0-curl php7.0-intl php7.0-json php7.0-xml php7.0-mbstring php7.0-zip && \
+    apt clean && rm -rf /var/lib/apt/lists/* && \
     unlink /etc/php/7.0/fpm/pool.d/www.conf && \
     unlink /etc/php/7.0/cli/php.ini && \
     unlink /etc/php/7.0/fpm/php.ini
@@ -31,7 +31,6 @@ RUN apt-get update && \
 ADD php/fpm.conf /etc/php/7.0/fpm/pool.d/fpm.conf
 ADD php/php.ini /etc/php/7.0/fpm/php.ini
 ADD php/php.ini /etc/php/7.0/cli/php.ini
-
 
 #PHP Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
