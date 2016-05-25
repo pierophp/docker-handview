@@ -59,7 +59,7 @@ ADD supervisor/nginx.conf /etc/supervisor/conf.d/nginx.conf
 ADD supervisor/mysql.conf /etc/supervisor/conf.d/mysql.conf
 
 RUN apt update && \
-    apt install -y php7.0-fpm php7.0-cli php7.0-gd php7.0-mcrypt php7.0-mysql php7.0-curl php7.0-intl php7.0-json php7.0-xml php7.0-mbstring php7.0-zip && \
+    apt install -y php7.0-fpm php7.0-cli php7.0-gd php7.0-mcrypt php7.0-mysql php7.0-curl php7.0-intl php7.0-json php7.0-xml php7.0-mbstring php7.0-zip php7.0-dev && \
     apt clean && rm -rf /var/lib/apt/lists/* && \
     unlink /etc/php/7.0/fpm/pool.d/www.conf && \
     unlink /etc/php/7.0/cli/php.ini && \
