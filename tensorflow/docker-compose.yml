@@ -4,5 +4,6 @@ tensorflow:
     image: pierophp/tensorflow:latest
     ports:
         - "8888:8888"
+        - "6006:6006"
     volumes:
         - ./workdir/notebooks/:/notebooks

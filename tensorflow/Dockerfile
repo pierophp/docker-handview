@@ -1,8 +1,8 @@
 FROM tensorflow/tensorflow:latest
 
-RUN apt update && \
-    apt install -y graphviz && \
-    apt clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+    apt-get install -y graphviz && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN pip install sklearn pydot graphviz
 
