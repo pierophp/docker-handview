@@ -1,5 +1,9 @@
 FROM tensorflow/tensorflow:latest
 
-RUN pip install sklearn
+RUN apt update && \
+    apt install -y graphviz && \
+    apt clean && rm -rf /var/lib/apt/lists/*
+
+RUN pip install sklearn pydot graphviz
 
 CMD ["/run_jupyter.sh"]
