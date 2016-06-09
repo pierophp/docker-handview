@@ -1,0 +1,8 @@
+tensorflow:
+    hostname: tensorflow
+    container_name: tensorflow
+    image: pierophp/tensorflow:latest
+    ports:
+        - "8888:8888"
+    volumes:
+        - ./workdir/notebooks/:/notebooks
