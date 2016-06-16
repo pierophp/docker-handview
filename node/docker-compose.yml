@@ -1,0 +1,8 @@
+node:
+    hostname: node
+    container_name: node
+    image: localnode
+    ports:
+        - "8010:80"
+    volumes:
+        - ./workdir/www/:/var/www/
