@@ -11,7 +11,7 @@ RUN apt update && \
 
 # Tools
 RUN apt update && \
-    apt install -y wget curl vim nano less unzip git mlocate && \
+    apt install -y wget curl vim nano less unzip git mlocate lsof && \
     apt clean && rm -rf /var/lib/apt/lists/*
 
 #Add user
