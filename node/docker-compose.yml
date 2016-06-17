@@ -4,5 +4,7 @@ node:
     image: pierophp/node
     ports:
         - "8010:80"
+        - "8701:8701"
+        - "3000:3000"
     volumes:
         - ./workdir/www/:/var/www/

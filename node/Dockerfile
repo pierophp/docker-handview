@@ -44,9 +44,11 @@ RUN apt-get update && \
 RUN npm install -g n && \
     n stable && \
 	npm install -g strongloop && \
+	npm install -g strong-pm && \
 	npm install -g nodemon && \
 	npm install -g knex && \
-	npm install -g bower
+	npm install -g bower && \
+	npm cache clear
 	
 #Update locate
 RUN updatedb
