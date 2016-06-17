@@ -1,7 +1,7 @@
 node:
     hostname: node
     container_name: node
-    image: localnode
+    image: pierophp/node
     ports:
         - "8010:80"
     volumes:
