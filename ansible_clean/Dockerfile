@@ -15,6 +15,8 @@ RUN apt-get update && \
     apt-get install -y supervisor && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
+ADD supervisor/sshd.conf /etc/supervisor/conf.d/sshd.conf
+
 EXPOSE 22
 
 CMD ["/usr/bin/supervisord", "--nodaemon", "-c", "/etc/supervisor/supervisord.conf"]
