@@ -5,4 +5,4 @@ web:
     ports:
         - "8002:80"
     volumes:
-        - ./workdir/www//:/var/www/
+        - ./workdir/www/:/var/www/
