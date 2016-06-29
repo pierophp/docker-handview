@@ -1,0 +1,6 @@
+ssh:
+    hostname: ssh
+    container_name: ssh
+    image: pierophp/ssh
+    ports:
+        - "2224:22"

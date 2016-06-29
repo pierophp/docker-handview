@@ -1,6 +1,0 @@
-ansible_clean:
-    hostname: ansible_clean
-    container_name: ansible_clean
-    image: pierophp/ansible_clean
-    ports:
-        - "2224:22"
